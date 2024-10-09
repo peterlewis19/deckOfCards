@@ -1,6 +1,6 @@
 public class Deck {
     private Card[] deckOfCards;
-    private String[] suits = {"Hearts", "Diamonds", "Spades", "Clubs"};
+    private final String[] suits = {"Hearts", "Diamonds", "Spades", "Clubs"};
 
     public Deck(){
         this.deckOfCards = new Card[52];
@@ -28,6 +28,27 @@ public class Deck {
     }
 
     public void bubbleSort(){
+        boolean sorted = true;
 
+        while (sorted){
+            sorted = false;
+
+            for (int i=0; i<deckOfCards.length-1; i++){
+                int comparison = deckOfCards[i].toString().compareTo(deckOfCards[i+1].toString());
+
+                deckOfCards[i].compareTo(deckOfCards[i+1]);
+
+                //..count > ..count+1
+                if (comparison > 0){
+                    sorted = true;
+                    //swaps the 2 cards
+                    Card temp = deckOfCards[i];
+                    deckOfCards[i] = deckOfCards[i+1];
+                    deckOfCards[i+1] = temp;
+                }
+
+            }
+        }
     }
+
 }

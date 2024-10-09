@@ -9,5 +9,7 @@ public class Main {
 
         thisDeck.addsToDeck();
         thisDeck.displayDeck();
+        thisDeck.bubbleSort();
+        thisDeck.displayDeck();
     }
 }
