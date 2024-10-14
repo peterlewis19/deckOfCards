@@ -13,6 +13,6 @@ public class Main {
 
         Pontoon newGame = new Pontoon();
 
-        newGame.run(3);
+        newGame.run(1);
     }
 }

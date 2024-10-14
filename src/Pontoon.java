@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Pontoon {
     private Deck dealersDeck = new Deck();
     private int cardCount = -1;
-    private int turnCount = 0;
+    private int turnCount = 1;
     private Scanner getInput = new Scanner(System.in);
     private int standCount = 0;
     private boolean bothStand = false;
@@ -25,9 +25,9 @@ public class Pontoon {
         houseCards[1] = hit();
 
         System.out.println("You have: "+ userCards[0] + ", " + userCards[1]);
-        System.out.println("The house has "+ houseCards[0] + ", " + houseCards[1]);
+        System.out.println("The house has "+ houseCards[0] + ",  (" + houseCards[1] + ")");
 
-        while (getHandValue(userCards) <= 21 && getHandValue(houseCards) <= 21 && !bothStand){
+        while (getHandValue(userCards) <= 21 && getHandValue(houseCards) <= 21){
             //asks user if they wish to hit or stand
             System.out.println("Hit or Stand? (h or s)");
             String choice = getInput.nextLine();
@@ -36,23 +36,37 @@ public class Pontoon {
             turnCount++;
 
             if (choice.equals("h")){ //player hits
-                userCards[turnCount+1] = hit();
+                userCards[turnCount] = hit();
+                //now the house
+                houseCards[turnCount] = hit();
             } else{//player stands
                 standCount ++;
+
+                //int houseCardStanding = turnCount;
+                while (getHandValue(houseCards) <= 21 && getHandValue(houseCards) <= getHandValue(userCards)){
+                    houseCards[turnCount+1] = hit();
+
+                    //System.out.println("The house has: ");
+                    for (int i = 0; i<=turnCount; i++){
+                        System.out.print(houseCards[i] +" ");
+                    }
+                    System.out.println("Value of: " + getHandValue(houseCards));
+
+                    turnCount++;
+                }
             }
-            //now the house
-            houseCards[turnCount+1] = hit();
 
             //users Cards
-            System.out.println("You have :" );
-            for (int i = 0; i<=turnCount+1-standCount; i++){
+            System.out.println("You have : ");
+            for (int i = 0; i<=turnCount; i++){
                 System.out.print(userCards[i] +" ");
             }
             System.out.println("Value of: " + getHandValue(userCards));
 
             //the houses cards
+
             System.out.println("The house has: ");
-            for (int i = 0; i<=turnCount+1-standCount; i++){
+            for (int i = 0; i<=turnCount; i++){
                 System.out.print(houseCards[i] +" ");
             }
             System.out.println("Value of: " + getHandValue(houseCards));
@@ -77,33 +91,21 @@ public class Pontoon {
     //gets the value of a hand
     public int getHandValue(Card[] hand){
         int handValue = 0;
-        //int aceCount = 0;
 
         //adds each cards value to find the hand value
-        for (int i=0; i<=turnCount+1-standCount; i++){
+        for (int i=0; i<=turnCount; i++){
             if (hand[i].getNumberValue() > 10) {
                 handValue = handValue+ 10;
             } else if(hand[i].getNumberValue() == 1){
-                //System.out.println("Is the ace worth 1 or 11?");
-                //String choice = getInput.nextLine();
-
                 handValue = handValue + 11;
-                //aceCount++;
+                while (handValue >= 21){
+                    handValue = handValue-10;
+                }
             } else{
                 handValue = handValue + hand[i].getNumberValue();
             }
         }
 
-        /*if (aceCount == 1){
-            if ((handValue + aceCount*11) > 21){
-                handValue ++;
-            } else{
-                handValue = handValue+11;
-            }
-        } else {
-            handValue = handValue+ (aceCount*1) + 11;
-        }
-        */
         return handValue;
     }
 }
