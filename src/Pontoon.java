@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -45,8 +44,7 @@ public class Pontoon {
                 }
                 System.out.println();
 
-            } else{//player stands
-                //PLAYER STANDS, house adds cards until its greater than value of playerCards
+            } else{
                 while (getHandValue(houseCards) <= getHandValue(playerCards)){
                     houseCards.add(hit());
                 }
@@ -75,8 +73,8 @@ public class Pontoon {
     }
 
     public void displayAllCards(ArrayList<Card> hand){
-        for (int i = 0; i<hand.size(); i++){
-            System.out.print(hand.get(i) +" ");
+        for (Card card : hand) {
+            System.out.print(card + " ");
         }
         System.out.println();
     }
