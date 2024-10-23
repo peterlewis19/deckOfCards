@@ -1,4 +1,4 @@
-import java.sql.SQLOutput;
+import java.util.Random;
 
 public class Deck {
     private Card[] deckOfCards;
@@ -64,6 +64,19 @@ public class Deck {
             randomIndex = (int)(Math.random()*deckOfCards.length);
         }
     }
+    //Fisher Yates shuffle
+    public void betterShuffle(){
+        int randomIndex;
+        Random r = new Random();
+
+        for (int i = 51; i>0; i--) {
+            randomIndex = r.nextInt(0, i+1);
+
+            Card temp = deckOfCards[randomIndex];
+            deckOfCards[randomIndex] = deckOfCards[i];
+            deckOfCards[i] = temp;
+        }
+    }
     //Create a deal method that takes two integer parameters: hand and players.
     // It then deals the number of cards specified in hand, to each of the players. e.g 7 cards to 2 players
     // The cards should be dealt from one end of the array and should be dealt
@@ -80,6 +93,16 @@ public class Deck {
             System.out.println();
 
         }
+    }
+
+    //gives the length
+    public int length(){
+        int cardCount = 0;
+        for (Card card: deckOfCards){
+            cardCount++;
+        }
+
+        return cardCount;
     }
 
     public Card dealCardN(int index){

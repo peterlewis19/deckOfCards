@@ -3,60 +3,66 @@ import java.util.Scanner;
 
 public class Pontoon {
     private Deck dealersDeck = new Deck();
-    private int cardCount = -1;
+    private int cardCount = 0;
     private Scanner getInput = new Scanner(System.in);
+    //private Hand playerHand = new Hand();
 
     public Pontoon(){
         dealersDeck.addsToDeck();
-        dealersDeck.shuffle();
+        dealersDeck.betterShuffle();
+        //dealersDeck.displayDeck();
     }
 
     public void run(int players){
-        ArrayList<Card> houseCards = new ArrayList<>();
-        ArrayList<Card> playerCards = new ArrayList<>();
+        Hand playerHand = new Hand("Player");
+        Hand houseHand = new Hand("House");
+
+        boolean stand = false;
 
         //gives initial cards to player and house
         for (int i = 0; i< 2; i++) {
-            playerCards.add(hit());
-            houseCards.add(hit());
+            playerHand.add(deal());
+            houseHand.add(deal());
         }
 
-        System.out.println("You have: "+ playerCards.get(0) + ", " + playerCards.get(1));
-        System.out.println("The house has "+ houseCards.get(0) + ",  (CARD)");
+        //Hand("House").add
 
-        while (getHandValue(playerCards) < 21 && (getHandValue(houseCards) < 21 || getHandValue(houseCards) < getHandValue(playerCards))){
+        System.out.println("You have: "+ playerHand.get(0) + ", " + playerHand.get(1));
+        System.out.println("The house has: "+ houseHand.get(0) + ",  (CARD)");
+        
+        while ((playerHand.getHandValue() < 21 && playerHand.getHandValue() < 21) && !stand){
             //asks user if they wish to hit or stand
             System.out.println("Hit or Stand? (h or s)");
             String choice = getInput.nextLine();
 
             if (choice.equals("h")){ //player hits
-                playerCards.add(hit());
+                playerHand.add(deal());
                 //now the house
-                houseCards.add(hit());
+                houseHand.add(deal());
 
-                System.out.println("You have : ");
-                displayAllCards(playerCards);
+                playerHand.show();
 
-                System.out.println("The house has: ");
-                System.out.print(houseCards.get(0));
-                for (int i =1; i<houseCards.size(); i++){
+                //house shows the first card, not the rest
+                System.out.print(houseHand.get(0));
+                for (int i =1; i<houseHand.size(); i++){
                     System.out.print(" (CARD)");
                 }
                 System.out.println();
 
             } else{
-                while (getHandValue(houseCards) <= getHandValue(playerCards)){
-                    houseCards.add(hit());
+                stand = true;
+                while (houseHand.getHandValue() <= playerHand.getHandValue()){
+                    houseHand.add(deal());
                 }
 
-                displayAllCards(houseCards);
-                System.out.println("Value of: " + getHandValue(houseCards));
+                //Hand(houseHand);
+                //System.out.println("Value of: " + getHandValue(houseHand));
             }
         }
 
-        if (getHandValue(houseCards) > 21 && getHandValue(playerCards) < 21){
+        if (houseHand.getHandValue()> 21 && (playerHand.getHandValue() < 21)){
             System.out.println("User wins");
-        } else if (getHandValue(playerCards) == 21 && getHandValue(houseCards) != 21){
+        } else if (getHandValue(playerHand) == 21 && getHandValue(houseHand) != 21){
             System.out.println("user wins");
         } else{
             System.out.println("The house wins");
@@ -65,48 +71,24 @@ public class Pontoon {
         System.out.println();
 
         System.out.println("You had:");
-        displayAllCards(playerCards);
+        playerHand.show();
 
         System.out.println("The house had: ");
-        displayAllCards(houseCards);
-
+        houseHand.show();
     }
 
-    public void displayAllCards(ArrayList<Card> hand){
-        for (Card card : hand) {
-            System.out.print(card + " ");
-        }
-        System.out.println();
-    }
     //player wants a new card
-    public Card hit(){
+    public Card deal(){
+        if (cardCount>=dealersDeck.length()-1){
+            dealersDeck.addsToDeck();
+            dealersDeck.betterShuffle();
+        }
+
+        Card nextCard = dealersDeck.dealCardN(cardCount);
         cardCount ++;
-        return dealersDeck.dealCardN(cardCount);
+        
+        return nextCard;
     }
 
-    //gets the value of a hand
-    public int getHandValue(ArrayList<Card> hand){
-        int handValue = 0;
-        int aceCount = 0;
-
-        //adds each cards value to find the hand value
-        for (Card card : hand) {
-            if (card.getNumberValue() > 10) {
-                handValue = handValue + 10;
-            } else if (card.getNumberValue() == 1) {
-                handValue = handValue + 11;
-
-                aceCount++;
-            } else {
-                handValue = handValue + card.getNumberValue();
-            }
-        }
-
-        while (aceCount > 0 && handValue > 21){
-            handValue = handValue - (10);
-
-            aceCount--;
-        }
-        return handValue;
-    }
+    
 }
