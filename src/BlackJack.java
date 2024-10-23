@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Pontoon {
+public class BlackJack {
     private Deck dealersDeck = new Deck();
     private int cardCount = 0;
     private Scanner getInput = new Scanner(System.in);
-    //private Hand playerHand = new Hand();
+    private Hand playerHand;
+    private Hand houseHand;
 
-    public Pontoon(){
+    public BlackJack(){
         dealersDeck.addsToDeck();
         dealersDeck.betterShuffle();
-        //dealersDeck.displayDeck();
     }
 
     public void run(int players){
@@ -25,9 +25,7 @@ public class Pontoon {
             houseHand.add(deal());
         }
 
-        //Hand("House").add
-
-        System.out.println("You have: "+ playerHand.get(0) + ", " + playerHand.get(1));
+        playerHand.show();
         System.out.println("The house has: "+ houseHand.get(0) + ",  (CARD)");
         
         while ((playerHand.getHandValue() < 21 && playerHand.getHandValue() < 21) && !stand){
@@ -62,7 +60,7 @@ public class Pontoon {
 
         if (houseHand.getHandValue()> 21 && (playerHand.getHandValue() < 21)){
             System.out.println("User wins");
-        } else if (getHandValue(playerHand) == 21 && getHandValue(houseHand) != 21){
+        } else if (playerHand.getHandValue() == 21 && houseHand.getHandValue() != 21){
             System.out.println("user wins");
         } else{
             System.out.println("The house wins");
@@ -70,10 +68,8 @@ public class Pontoon {
 
         System.out.println();
 
-        System.out.println("You had:");
         playerHand.show();
 
-        System.out.println("The house had: ");
         houseHand.show();
     }
 
