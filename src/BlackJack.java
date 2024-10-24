@@ -1,19 +1,16 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BlackJack {
-    private Deck dealersDeck = new Deck();
+    private final Deck dealersDeck = new Deck();
     private int cardCount = 0;
-    private Scanner getInput = new Scanner(System.in);
-    private Hand playerHand;
-    private Hand houseHand;
+    private final Scanner getInput = new Scanner(System.in);
 
     public BlackJack(){
         dealersDeck.addsToDeck();
         dealersDeck.betterShuffle();
     }
 
-    public void run(int players){
+    public void run(){
         Hand playerHand = new Hand("Player");
         Hand houseHand = new Hand("House");
 
@@ -42,26 +39,25 @@ public class BlackJack {
 
                 //house shows the first card, not the rest
                 System.out.print(houseHand.get(0));
-                for (int i =1; i<houseHand.size(); i++){
+                for (int i = 1; i< houseHand.size(); i++){
                     System.out.print(" (CARD)");
                 }
                 System.out.println();
 
             } else{
                 stand = true;
-                while (houseHand.getHandValue() <= playerHand.getHandValue()){
+                while (houseHand.getHandValue() <=16 || houseHand.getHandValue() <= playerHand.getHandValue()){
                     houseHand.add(deal());
                 }
-
-                //Hand(houseHand);
-                //System.out.println("Value of: " + getHandValue(houseHand));
             }
         }
 
         if (houseHand.getHandValue()> 21 && (playerHand.getHandValue() < 21)){
             System.out.println("User wins");
-        } else if (playerHand.getHandValue() == 21 && houseHand.getHandValue() != 21){
+        } else if (playerHand.getHandValue() == 21 && houseHand.getHandValue() != 21) {
             System.out.println("user wins");
+        } else if (playerHand.getHandValue()<=21 && playerHand.getHandValue()>= houseHand.getHandValue()) {
+            System.out.println("User wins");
         } else{
             System.out.println("The house wins");
         }

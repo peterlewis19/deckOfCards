@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Hand {
-    private ArrayList<Card> currrentHand;
-    private String name;
+    private final ArrayList<Card> currrentHand;
+    private final String name;
 
     public Hand(String name){
         this.name = name;
@@ -25,10 +25,11 @@ public class Hand {
     public void show() {
         System.out.println(name + ":");
 
-        for (int i=0; i<currrentHand.size(); i++) {
-            Card c = currrentHand.get(i);
-            System.out.println(c);
+        for (Card c : currrentHand) {
+            System.out.print(c + " ");
         }
+
+        System.out.println();
     }
 
     //returns the value of the hand
@@ -55,7 +56,7 @@ public class Hand {
             aceCount--;
         }
         return handValue;
-        }
+
     }
 
 }
